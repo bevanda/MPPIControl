@@ -13,7 +13,8 @@ param.mc = 1;
 param.mp = 0.01;
 param.l = 1;
 param.g = 9.81;
-
+param.kd = 0;
+param.mu = 0;
 % Variance and Lamda
 param.lambda = 10;
 param.variance = 10;
@@ -55,7 +56,7 @@ for j = 1: iteration
         x(:,1) = x_init;
         for i = 1:N-1
             delta_u(i,k) = param.variance*(randn(1));
-            x(:,i+1) = x(:,i) + Pendulam_Dynamics(x(1,i), x(2,i), x(3,i),...
+            x(:,i+1) = x(:,i) + CartPole_Dynamics(x(1,i), x(2,i), x(3,i),...
                 x(4,i), (u(i)+delta_u(i,k)), param)*param.dt;
                 Stk(k) = Stk(k) + cost_function(x(1,i+1), x(2,i+1), x(3,i+1), ...
                     x(4,i+1),(u(i)+ delta_u(i,k)),param);
@@ -86,7 +87,7 @@ for j = 1: iteration
     U_sys(j) = u(1);
     
     % System Updatation because of input
-    X_sys(:,j+1) = X_sys(:,j) + Pendulam_Dynamics(X_sys(1, j), X_sys(2,j),...
+    X_sys(:,j+1) = X_sys(:,j) + CartPole_Dynamics(X_sys(1, j), X_sys(2,j),...
         X_sys(3,j), X_sys(4,j), u(1), param)*param.dt;
     
     % Calculating state cost function

@@ -11,7 +11,7 @@ def pendulum_dynamics(x, x_dot, theta, theta_dot, u, mc, mp):
           (u + mp * np.sin(theta) * (l * theta_dot ** 2 + g * np.cos(theta))) / (mc + mp * np.sin(theta) ** 2),
           theta_dot,
           (-u * np.cos(theta) - mp * l * theta_dot ** 2 * np.cos(theta) * np.sin(theta) - (mc + mp) * g * np.sin(
-              theta)) / (mc + mp * np.sin(theta) ** 2)]
+              theta)) / (l*(mc + mp * np.sin(theta) ** 2))]
     return np.array(dx)
 
 
