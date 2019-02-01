@@ -9,4 +9,4 @@ The project is to conduct a study on Model Predictive Path Integral (MPPI) Contr
 - [Model Predictive Path Integral Control: From Theory to Parallel Computation](https://arc.aiaa.org/doi/abs/10.2514/1.G001921)
 - [Information Theoretic Model Predictive Control: Theory and Applications to Autonomous Driving](https://arxiv.org/abs/1707.02342)
 
-This project is built and expanded on https://github.com/vvrs/MPPIController.
+Initially forked from https://github.com/vvrs/MPPIController.
