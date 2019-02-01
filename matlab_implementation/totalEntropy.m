@@ -1,5 +1,5 @@
 function [entropy] = totalEntropy(Sk , del_uk, param)
-    % Calculation of expectency over trajectory 
+    % Calculation of expectation over all trajectorties 
     
     % Normalization of cost function 
 %     Sk = Sk./sum(Sk);
