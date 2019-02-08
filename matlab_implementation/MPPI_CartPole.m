@@ -63,10 +63,6 @@ for j = 1: iterations
                 Stk(k) = Stk(k) + cost_function(x(1,i+1), x(2,i+1), x(3,i+1), ...
                     x(4,i+1),(u(i)+ delta_u(i,k)),param);
                 
-%            implementing updated cost function given in paper Aggressive
-%            Driving with MPPI control
-%             Stk(k) = Stk(k) + cost_function_updat(x(1,i+1), x(2,i+1), x(3,i+1), ...
-%                 x(4,i+1),u(i),delta_u(i,k),param);
         end
         delta_u(N,k) = param.variance*(randn(1));
         

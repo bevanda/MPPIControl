@@ -9,9 +9,9 @@ Cart = [pos;zeros(size(pos))];
 Bob = Cart + param.l*[sin(angle); -cos(angle)];
 
 %Pack up for plotting:
-t = zeros(1,iteration+1);
+t = zeros(1,iterations+1);
 x = [Cart;Bob];
-for i = 1:iteration
+for i = 1:iterations
     t(i+1) = param.dt*i;
 end
 

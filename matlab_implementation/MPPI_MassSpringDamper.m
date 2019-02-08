@@ -10,13 +10,13 @@ iterations = 500;
 param.dt = 0.02;
 
 % System Paramters Given in the Project setting
-param.mp = 1;
-param.l = 1;
+param.m = 1;
 param.g = 9.81;
-param.mu = 0.2;
+param.k = 1.0;
+param.c = 0.0;
 
 % Variance and Lamda
-param.lambda = 10;
+param.lambda = 20;
 param.variance = 10;
 param.R = 1;
 
@@ -26,7 +26,7 @@ param.R = 1;
 x_init = [0 0];
 
 % Final state for Cart Pole
-x_fin = [-pi 0];
+x_fin = [1.5 0];
 
 % Variables To store the system state
 X_sys = zeros(2,iterations+1);
@@ -57,9 +57,9 @@ for j = 1: iterations
         x(:,1) = x_init;
         for i = 1:N-1
             delta_u(i,k) = param.variance*(randn(1));
-            x(:,i+1) = x(:,i) + InvertedPendulum_Dynamics(x(1,i), x(2,i),...
+            x(:,i+1) = x(:,i) + MassSpringDamper_Dynamics(x(1,i), x(2,i),...
                  (u(i)+delta_u(i,k)), param)*param.dt;
-                Stk(k) = Stk(k) + inv_pend_cost_function(x(1,i+1), x(2,i+1), ...
+                Stk(k) = Stk(k) + mass_spring_damper_cost_function(x(1,i+1), x(2,i+1), ...
                     (u(i)+ delta_u(i,k)),param);
         
                 
@@ -86,11 +86,11 @@ for j = 1: iterations
     U_sys(j) = u(1);
     
     % System Updatation because of input
-    X_sys(:,j+1) = X_sys(:,j) + InvertedPendulum_Dynamics(X_sys(1, j), X_sys(2,j),...
+    X_sys(:,j+1) = X_sys(:,j) + MassSpringDamper_Dynamics(X_sys(1, j), X_sys(2,j),...
          u(1), param)*param.dt;
     
     % Calculating state cost function
-    cost(j+1) = inv_pend_cost_function(X_sys(1,j+1), X_sys(2,j+1),...
+    cost(j+1) = mass_spring_damper_cost_function(X_sys(1,j+1), X_sys(2,j+1),...
         (u(i)+delta_u(i,k)),param);
     
     % Input updatation for next time step
@@ -112,12 +112,7 @@ figure
 plot(X_sys(1,:))
 hold on
 plot(X_sys(2,:))
-title('Theta and ThetaDot');
-ylabel('Theta ThetaDot');
+title('X and XDot');
+ylabel('X XDot');
 xlabel('iterations');
-legend('Theta', 'ThetaDot');
-
-%%
-% Animation of Inverted Pendulum
-figure;
-animatePendulum;
+legend('X', 'XDot');
