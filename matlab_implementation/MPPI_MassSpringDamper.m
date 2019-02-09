@@ -16,16 +16,16 @@ param.k = 1.0;
 param.c = 0.0;
 
 % Variance and Lamda
-param.lambda = 20;
-param.variance = 10;
+param.lambda = 0.1;
+param.variance = 1;
 param.R = 1;
 
-% param.lambda = 1/(param.variance*K);
+%param.lambda = 1/(param.variance*K);
 
 % Initial State
 x_init = [0 0];
 
-% Final state for Cart Pole
+% Final state for Mass
 x_fin = [1.5 0];
 
 % Variables To store the system state
