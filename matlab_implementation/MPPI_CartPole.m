@@ -20,12 +20,12 @@ param.mu = 0;
 % Variance and Lamda
 param.lambda = 10;
 param.variance = 10;
-param.R = 1;
+param.R = 1/param.lambda;
 
 % param.lambda = 1/(param.variance*K);
 
 % Initial State
-x_init = [0 0 pi*(9/18) 0];
+x_init = [0 0 pi*(0/18) 0];
 
 % Final state for Cart Pole
 x_fin = [0 0 pi 0];

@@ -18,7 +18,7 @@ param.c = 0.0;
 % Variance and Lamda
 param.lambda = 0.1;
 param.variance = 1;
-param.R = 1;
+param.R = 1/param.lambda; %input weigthing
 
 %param.lambda = 1/(param.variance*K);
 
@@ -106,6 +106,11 @@ for j = 1: iterations
     x_init = X_sys(:,j+1);  
     
 end
+
+%% Plot the average cost over iterations
+figure
+plot(cost_avg)
+
 
 %% plot the cart pole state X and theta
 figure

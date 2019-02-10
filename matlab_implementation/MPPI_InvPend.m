@@ -16,9 +16,9 @@ param.g = 9.81;
 param.mu = 0.2;
 
 % Variance and Lamda
-param.lambda = 10;
-param.variance = 10;
-param.R = 1;
+param.lambda = 0.5;
+param.variance = 2;
+param.R = 1/param.lambda;
 
 % param.lambda = 1/(param.variance*K);
 
@@ -26,7 +26,7 @@ param.R = 1;
 x_init = [0 0];
 
 % Final state for Cart Pole
-x_fin = [-pi 0];
+x_fin = [pi 0];
 
 % Variables To store the system state
 X_sys = zeros(2,iterations+1);
