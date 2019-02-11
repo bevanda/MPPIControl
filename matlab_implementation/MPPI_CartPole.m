@@ -1,11 +1,10 @@
 clear all;
 clc;
-% delete(gcp('nocreate'));
-%for speedup
-% parpool('local', 4);
 
 K = 1000;
 N = 100;
+
+%10s trajectory execution
 iterations = 500;
 param.dt = 0.02;
 
@@ -22,10 +21,8 @@ param.lambda = 10;
 param.variance = 10;
 param.R = 1/param.lambda;
 
-% param.lambda = 1/(param.variance*K);
-
 % Initial State
-x_init = [0 0 pi*(0/18) 0];
+x_init = [0 0 pi*(9/18) 0];
 
 % Final state for Cart Pole
 x_fin = [0 0 pi 0];
@@ -60,7 +57,7 @@ for j = 1: iterations
             delta_u(i,k) = param.variance*(randn(1));
             x(:,i+1) = x(:,i) + CartPole_Dynamics(x(1,i), x(2,i), x(3,i),...
                 x(4,i), (u(i)+delta_u(i,k)), param)*param.dt;
-                Stk(k) = Stk(k) + cost_function(x(1,i+1), x(2,i+1), x(3,i+1), ...
+                Stk(k) = Stk(k) + cost_function_cartpole(x(1,i+1), x(2,i+1), x(3,i+1), ...
                     x(4,i+1),(u(i)+ delta_u(i,k)),param);
                 
         end
@@ -70,12 +67,8 @@ for j = 1: iterations
     
     % Average cost over iterations
     cost_avg(j) = sum(Stk)/K;
-    
-    % Updating lambda as function of R which Lambad = 1/R here R = Cost
-    % function
-%     param.lambda = 1000*cost(j) + 1;
 
-    % Updating the control input according to the expectency over K sample
+    % Updating the control input according to the expectation over K sample
     % trajectories
     for i = 1:N
         u(i) = u(i) + totalEntropy(Stk(:) , delta_u(i,:),param);
@@ -89,7 +82,7 @@ for j = 1: iterations
         X_sys(3,j), X_sys(4,j), u(1), param)*param.dt;
     
     % Calculating state cost function
-    cost(j+1) = cost_function(X_sys(1,j+1), X_sys(2,j+1), X_sys(3,j+1),...
+    cost(j+1) = cost_function_cartpole(X_sys(1,j+1), X_sys(2,j+1), X_sys(3,j+1),...
         X_sys(4,j+1),(u(i)+delta_u(i,k)),param);
     
     % Input updatation for next time step
@@ -100,7 +93,7 @@ for j = 1: iterations
     % Updating the input in Last time step
     u(N) = u_init;
     
-    % initial state for calculating the expectency over trajectory in next
+    % initial state for calculating the expectation over trajectories in next
     % step
     x_init = X_sys(:,j+1);  
 end
@@ -114,6 +107,10 @@ title('X and Theta');
 ylabel('X and Theta');
 xlabel('iterations');
 legend('X', 'Theta');
+
+%% Plot the average cost over iterations
+figure
+plot(cost_avg)
 
 %%
 % Animation of Cart Pole

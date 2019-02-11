@@ -1,11 +1,10 @@
 clear all;
 clc;
-% delete(gcp('nocreate'));
-%for speedup
-% parpool('local', 4);
 
 K = 1000;
 N = 100;
+
+%10s trajectory execution
 iterations = 500;
 param.dt = 0.02;
 
@@ -16,11 +15,9 @@ param.g = 9.81;
 param.mu = 0.2;
 
 % Variance and Lamda
-param.lambda = 0.5;
-param.variance = 2;
+param.lambda = 10;
+param.variance = 10;
 param.R = 1/param.lambda;
-
-% param.lambda = 1/(param.variance*K);
 
 % Initial State
 x_init = [0 0];
@@ -59,7 +56,7 @@ for j = 1: iterations
             delta_u(i,k) = param.variance*(randn(1));
             x(:,i+1) = x(:,i) + InvertedPendulum_Dynamics(x(1,i), x(2,i),...
                  (u(i)+delta_u(i,k)), param)*param.dt;
-                Stk(k) = Stk(k) + inv_pend_cost_function(x(1,i+1), x(2,i+1), ...
+                Stk(k) = Stk(k) + cost_function_inv_pend(x(1,i+1), x(2,i+1), ...
                     (u(i)+ delta_u(i,k)),param);
         
                 
@@ -72,11 +69,8 @@ for j = 1: iterations
     % Average cost over iterations
     cost_avg(j) = sum(Stk)/K;
     
-    % Updating lambda as function of R which Lambad = 1/R here R = Cost
-    % function
-%     param.lambda = 1000*cost(j) + 1;
 
-    % Updating the control input according to the expectency over K sample
+    % Updating the control input according to the expectation over K sample
     % trajectories
     for i = 1:N
         u(i) = u(i) + totalEntropy(Stk(:) , delta_u(i,:),param);
@@ -90,7 +84,7 @@ for j = 1: iterations
          u(1), param)*param.dt;
     
     % Calculating state cost function
-    cost(j+1) = inv_pend_cost_function(X_sys(1,j+1), X_sys(2,j+1),...
+    cost(j+1) = cost_function_inv_pend(X_sys(1,j+1), X_sys(2,j+1),...
         (u(i)+delta_u(i,k)),param);
     
     % Input updatation for next time step
@@ -101,7 +95,7 @@ for j = 1: iterations
     % Updating the input in Last time step
     u(N) = u_init;
     
-    % initial state for calculating the expectency over trajectory in next
+    % initial state for calculating the expectation over trajectories in next
     % step
     x_init = X_sys(:,j+1);  
     
@@ -116,6 +110,10 @@ title('Theta and ThetaDot');
 ylabel('Theta ThetaDot');
 xlabel('iterations');
 legend('Theta', 'ThetaDot');
+
+%% Plot the average cost over iterations
+figure
+plot(cost_avg)
 
 %%
 % Animation of Inverted Pendulum
