@@ -101,7 +101,7 @@ for j = 1: iterations
     
 end
 
-%% plot the cart pole state X and theta
+%% plot the pendulum states
 figure
 plot(X_sys(1,:))
 hold on

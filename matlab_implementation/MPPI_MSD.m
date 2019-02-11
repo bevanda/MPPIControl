@@ -105,7 +105,7 @@ figure
 plot(cost_avg)
 
 
-%% plot the cart pole state X and theta
+%% plot the system states
 figure
 plot(X_sys(1,:))
 hold on
