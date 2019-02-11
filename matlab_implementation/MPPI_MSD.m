@@ -16,9 +16,9 @@ param.k = 1.0;
 param.c = 0.0;
 
 % Variance and Lamda
-param.lambda = 0.1;
+param.lambda = 1;
 param.variance = 1;
-param.R = 1/param.lambda; %input weigthing
+param.R = 1/param.lambda; %input weigthing for cost
 
 %param.lambda = 1/(param.variance*K);
 
