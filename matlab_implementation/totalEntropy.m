@@ -1,12 +1,10 @@
-function [entropy] = totalEntropy(Sk , del_uk, param)
+function [entropy] = totalEntropy(Sk , del_uk, lambda)
     % Calculation of expectation over all trajectorties 
     
     % Normalization of cost function 
-%     Sk = Sk./sum(Sk);
-
+%     Sk = Sk./sum(Sk);\
 
     n = length(Sk);
-    lambda = param.lambda;
     sum1 = 0;
     sum2 = 0;
     for i = 1:n

@@ -1,118 +1,58 @@
-clear all;
-clc;
-
-K = 1000;
-N = 100;
-
-%10s trajectory execution
-iterations = 500;
-param.dt = 0.02;
-
-% System Paramters Given in the Project setting
-param.mc = 1;
-param.mp = 0.2;
-param.l = 0.5;
-param.g = 9.81;
-param.kd = 0.2;
-param.mu = 0;
-
-% Variance and Lamda
-param.lambda = 10;
-param.variance = 10;
-param.R = 1/param.lambda;
-
-% Initial State
-x_init = [0 0 pi*(9/18) 0];
-
-% Final state for Cart Pole
-x_fin = [0 0 pi 0];
-
-% Variables To store the system state
-X_sys = zeros(4,iterations+1);
-U_sys = zeros(1,iterations);
-cost  = zeros(1,iterations);
-cost_avg = zeros(1,iterations);
-
-X_sys(:,1) = x_init;
-
-% Initialization of Variables
-x = zeros(4,N);
-delta_u = zeros(N,K);
-u_init = 1;
-
-X_sys(:,1) = x_init;
-
-% Initialization of input for N time horizone
-u = zeros(1,N);
-
-% MPPI Loop
+function [X_sys,U_sys,cost_avg]=MPPI_CartPole(...
+                            iterations,N,K,lambda,variance,...
+                            x_init,x,u_init,X_sys,U_sys,delta_u,u,...
+                            cost, cost_avg,R,...
+                            mc, mp, l, g, kd, dt...
+                            )
 for j = 1: iterations
-    % Initialization of Cost for K Samples
-    Stk = zeros(1,K);
-    
-    % Calculating cost for K samples and N finite horizone
-    for k = 1:K
+        % Calculating cost for K samples and N finite horizone
+        Stk = zeros(K,1);
         x(:,1) = x_init;
-        for i = 1:N-1
-            delta_u(i,k) = param.variance*(randn(1));
-            x(:,i+1) = x(:,i) + CartPole_Dynamics(x(1,i), x(2,i), x(3,i),...
-                x(4,i), (u(i)+delta_u(i,k)), param)*param.dt;
-                Stk(k) = Stk(k) + cost_function_cartpole(x(1,i+1), x(2,i+1), x(3,i+1), ...
-                    x(4,i+1),(u(i)+ delta_u(i,k)),param);
-                
+        for k = 1:K
+            [Stk,delta_u,x]=...
+                sample_MPPI_CartPole(...
+                                    k,N,variance,Stk,...
+                                    x,delta_u,u,...
+                                    R, mc, mp, l, g, kd, dt...
+                                    );
+            delta_u(N,k) = variance*(randn(1));
         end
-        delta_u(N,k) = param.variance*(randn(1));
-        
-    end
-    
-    % Average cost over iterations
-    cost_avg(j) = sum(Stk)/K;
+        % get back data from GPU
 
-    % Updating the control input according to the expectation over K sample
-    % trajectories
-    for i = 1:N
-        u(i) = u(i) + totalEntropy(Stk(:) , delta_u(i,:),param);
-    end
-    
-    % Input to the system 
-    U_sys(j) = u(1);
-    
-    % System Updatation because of input
-    X_sys(:,j+1) = X_sys(:,j) + CartPole_Dynamics(X_sys(1, j), X_sys(2,j),...
-        X_sys(3,j), X_sys(4,j), u(1), param)*param.dt;
-    
-    % Calculating state cost function
-    cost(j+1) = cost_function_cartpole(X_sys(1,j+1), X_sys(2,j+1), X_sys(3,j+1),...
-        X_sys(4,j+1),(u(i)+delta_u(i,k)),param);
-    
-    % Input updatation for next time step
-    for i = 1:N-1
-        u(i) = u(i+1);
-    end
-    
-    % Updating the input in Last time step
-    u(N) = u_init;
-    
-    % initial state for calculating the expectation over trajectories in next
-    % step
-    x_init = X_sys(:,j+1);  
-end
+        % Average cost over iterations
+        cost_avg(j) = sum(Stk)/K;
 
-%% plot the cart pole state X and theta
-figure
-plot(X_sys(1,:))
-hold on
-plot(X_sys(3,:))
-title('X and Theta');
-ylabel('X and Theta');
-xlabel('iterations');
-legend('X', 'Theta');
+        % Updating the control input according to the expectation over K sample
+        % trajectories
 
-%% Plot the average cost over iterations
-figure
-plot(cost_avg)
+        for i1 = 1:N
+            u(i1) = u(i1) + totalEntropy(Stk, delta_u(i1,:), lambda);
+        end
 
-%%
-% Animation of Cart Pole
-figure;
-animatePendulumCart;
+        % Input to the system 
+        U_sys(j) = u(1);
+
+        % State update because of input
+        X_sys(:,j+1) = X_sys(:,j) + CartPole_Dynamics(X_sys(1, j), X_sys(2,j),...
+            X_sys(3,j), X_sys(4,j), u(1),  mc, mp, l, g, kd)*dt;
+
+        % Calculating state cost function
+        cost(j+1) = cost_function_cartpole(X_sys(1,j+1), X_sys(2,j+1), X_sys(3,j+1),...
+            X_sys(4,j+1),(u(1)+delta_u(1,k)), dt, R);
+
+        % Input updating for the next time step
+        for i2 = 1:N-1
+            u(i2) = u(i2+1);
+        end
+
+        % Updating the input in Last time step
+        u(N) = u_init;
+
+        % initial state for calculating the expectation over trajectories in next
+        % step
+        x_init = X_sys(:,j+1); 
+
+
+end % end for
+
+end % end function
