@@ -4,7 +4,7 @@
  * File: _coder_Sample_MPPI_CartPole_mex.h
  *
  * MATLAB Coder version            : 4.2
- * C/C++ source code generated on  : 13-May-2019 22:36:12
+ * C/C++ source code generated on  : 14-May-2019 00:18:02
  */
 
 #ifndef _CODER_SAMPLE_MPPI_CARTPOLE_MEX_H

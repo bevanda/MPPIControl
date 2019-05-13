@@ -4,7 +4,7 @@
 // File: eml_rand_mt19937ar_stateful.h
 //
 // MATLAB Coder version            : 4.2
-// C/C++ source code generated on  : 13-May-2019 22:36:12
+// C/C++ source code generated on  : 14-May-2019 00:18:02
 //
 #ifndef EML_RAND_MT19937AR_STATEFUL_H
 #define EML_RAND_MT19937AR_STATEFUL_H
@@ -16,7 +16,7 @@
 #include "Sample_MPPI_CartPole_types.h"
 
 // Function Declarations
-extern void state_not_empty_init();
+extern void c_eml_rand_mt19937ar_stateful_i();
 
 #endif
 

@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2018b">
-  <configuration build-checksum="1853159739" file="/home_net/pbevanda/MPPIControl/matlab_implementation/Sample_MPPI_CartPole.prj" location="/home_net/pbevanda/MPPIControl/matlab_implementation" name="Sample_MPPI_CartPole" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="2212263115" file="/home_net/pbevanda/MPPIControl/matlab_implementation/Sample_MPPI_CartPole.prj" location="/home_net/pbevanda/MPPIControl/matlab_implementation" name="Sample_MPPI_CartPole" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -125,7 +125,7 @@
       </unset>
     </profile>
     <profile key="profile.c">
-      <param.grt.GenCodeOnly>true</param.grt.GenCodeOnly>
+      <param.grt.GenCodeOnly>false</param.grt.GenCodeOnly>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
       <param.BuildFolder>option.BuildFolder.Project</param.BuildFolder>
@@ -801,14 +801,14 @@
       </unset>
     </profile>
     <param.objective>option.objective.c</param.objective>
-    <param.WorkflowStep>generateCode</param.WorkflowStep>
+    <param.WorkflowStep>workflowSummary</param.WorkflowStep>
     <param.TestSnippets>
       <item>MPPI_CartPole_example</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
     <param.ExternalFcnMajority>column</param.ExternalFcnMajority>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
-    <param.outputfile>${PROJECT_ROOT}/codegen/lib/Sample_MPPI_CartPole/Sample_MPPI_CartPole.a</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}/Sample_MPPI_CartPole_mex.mexa64</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.HasGpuCoder>true</param.HasGpuCoder>
@@ -823,18 +823,18 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>646226314</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3716098084</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
     <var.DismissScreener>false</var.DismissScreener>
     <param.unifiedParamStorage />
-    <var.gc.lastOutputRoot>codegen/lib/Sample_MPPI_CartPole</var.gc.lastOutputRoot>
-    <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>1118213139</var.gc.preBuildChecksum>
+    <var.gc.lastOutputRoot>codegen/mex/Sample_MPPI_CartPole</var.gc.lastOutputRoot>
+    <var.gc.lastOutputType>MEX_FILE</var.gc.lastOutputType>
+    <var.gc.preBuildChecksum>2212263115</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen/mex/Sample_MPPI_CartPole</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1065355311</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>1983409527</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>MPPI_CartPole_example</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
     <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home_net/pbevanda/MPPIControl/matlab_implementation/CartPole_Dynamics.m&lt;/file&gt;&lt;file&gt;/home_net/pbevanda/MPPIControl/matlab_implementation/Sample_MPPI_CartPole.m&lt;/file&gt;&lt;file&gt;/home_net/pbevanda/MPPIControl/matlab_implementation/cost_function_cartpole.m&lt;/file&gt;&lt;file&gt;/home_net/pbevanda/MPPIControl/matlab_implementation/sampleTraj_MPPI_CartPole.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;877673323&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
@@ -847,8 +847,8 @@
     <var.boundToGui>true</var.boundToGui>
     <param.mex.outputfile>Sample_MPPI_CartPole_mex</param.mex.outputfile>
     <param.grt.outputfile>Sample_MPPI_CartPole</param.grt.outputfile>
-    <param.artifact>option.target.artifact.lib</param.artifact>
-    <param.outputfile>${PROJECT_ROOT}/codegen/lib/Sample_MPPI_CartPole/Sample_MPPI_CartPole.a</param.outputfile>
+    <param.artifact>option.target.artifact.mex</param.artifact>
+    <param.outputfile>${PROJECT_ROOT}/Sample_MPPI_CartPole_mex.mexa64</param.outputfile>
     <param.gpu.Enabled>false</param.gpu.Enabled>
     <param.gpu.KernelNamePrefix />
     <param.gpu.SelectCudaDevice>-1</param.gpu.SelectCudaDevice>
@@ -868,8 +868,8 @@
     <var.isDeepLearningForMatlabCoderEnabled>true</var.isDeepLearningForMatlabCoderEnabled>
     <param.deeplearning.TargetLib>option.deeplearning.targetlibrary.none</param.deeplearning.TargetLib>
     <var.cfiTargetLibSuppression>false</var.cfiTargetLibSuppression>
-    <var.hasMatlabDeepLearningSupportPackage>false</var.hasMatlabDeepLearningSupportPackage>
-    <var.hasGpuDeepLearningSupportPackage>false</var.hasGpuDeepLearningSupportPackage>
+    <var.hasMatlabDeepLearningSupportPackage>true</var.hasMatlabDeepLearningSupportPackage>
+    <var.hasGpuDeepLearningSupportPackage>true</var.hasGpuDeepLearningSupportPackage>
     <param.tensorrt.DataType>option.tensorrt.datatype.fp32</param.tensorrt.DataType>
     <param.tensorrt.DataPath />
     <param.tensorrt.NumCalibrationBatches>1</param.tensorrt.NumCalibrationBatches>
@@ -957,6 +957,7 @@
       <var.notGpuCoder />
       <param.mex.outputfile />
       <param.grt.outputfile />
+      <param.artifact />
       <param.gpu.Enabled />
       <param.gpu.KernelNamePrefix />
       <param.gpu.SelectCudaDevice />
@@ -976,6 +977,8 @@
       <var.isDeepLearningForMatlabCoderEnabled />
       <param.deeplearning.TargetLib />
       <var.cfiTargetLibSuppression />
+      <var.hasMatlabDeepLearningSupportPackage />
+      <var.hasGpuDeepLearningSupportPackage />
       <param.tensorrt.DataType />
       <param.tensorrt.DataPath />
       <param.tensorrt.NumCalibrationBatches />
@@ -1030,7 +1033,7 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}/Sample_MPPI_CartPole.m">
-        <Marker>1557779537535</Marker>
+        <Marker>1557785732615</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
@@ -1044,8 +1047,8 @@
           <Input Name="variance" typeId="0" />
           <Input Name="Stk" typeId="1" />
           <Input Name="x" typeId="2" />
-          <Input Name="delta_u" typeId="3" />
-          <Input Name="u" typeId="4" />
+          <Input Name="delta_u" typeId="2" />
+          <Input Name="u" typeId="2" />
           <Input Name="R" typeId="0" />
           <Input Name="mc" typeId="0" />
           <Input Name="mp" typeId="0" />
@@ -1065,7 +1068,7 @@
             </type>
             <type typeId="1">
               <Class>double</Class>
-              <Size>1000 x 1</Size>
+              <Size>:inf x 1</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
@@ -1074,28 +1077,10 @@
             </type>
             <type typeId="2">
               <Class>double</Class>
-              <Size>4 x 100</Size>
+              <Size>:inf x :inf</Size>
               <Value />
               <InitialValue />
-              <UserDefined>false</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
-            <type typeId="3">
-              <Class>double</Class>
-              <Size>100 x 1000</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>false</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
-            <type typeId="4">
-              <Class>double</Class>
-              <Size>1 x 100</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>false</UserDefined>
+              <UserDefined>true</UserDefined>
               <Complex>false</Complex>
               <Sparse>false</Sparse>
             </type>
@@ -1104,7 +1089,7 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/codegen/lib/Sample_MPPI_CartPole" name="Sample_MPPI_CartPole.a" optional="false">/home_net/pbevanda/MPPIControl/matlab_implementation/codegen/lib/Sample_MPPI_CartPole/Sample_MPPI_CartPole.a</file>
+      <file location="${PROJECT_ROOT}" name="Sample_MPPI_CartPole_mex.mexa64" optional="false">/home_net/pbevanda/MPPIControl/matlab_implementation/Sample_MPPI_CartPole_mex.mexa64</file>
     </build-deliverables>
     <workflow />
     <matlab>

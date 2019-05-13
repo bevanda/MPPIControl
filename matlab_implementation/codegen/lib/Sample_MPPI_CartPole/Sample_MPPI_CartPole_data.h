@@ -4,7 +4,7 @@
 // File: Sample_MPPI_CartPole_data.h
 //
 // MATLAB Coder version            : 4.2
-// C/C++ source code generated on  : 13-May-2019 22:36:12
+// C/C++ source code generated on  : 14-May-2019 00:18:02
 //
 #ifndef SAMPLE_MPPI_CARTPOLE_DATA_H
 #define SAMPLE_MPPI_CARTPOLE_DATA_H
@@ -16,11 +16,7 @@
 #include "Sample_MPPI_CartPole_types.h"
 
 // Variable Declarations
-extern boolean_T method_not_empty;
-extern unsigned int b_method;
-extern unsigned int b_state;
-extern unsigned int c_state[2];
-extern boolean_T state_not_empty;
+extern unsigned int state[625];
 
 #endif
 

@@ -4,7 +4,7 @@
 // File: main.cpp
 //
 // MATLAB Coder version            : 4.2
-// C/C++ source code generated on  : 13-May-2019 22:36:12
+// C/C++ source code generated on  : 14-May-2019 00:18:02
 //
 
 //***********************************************************************
@@ -35,86 +35,40 @@
 #include "Sample_MPPI_CartPole.h"
 #include "main.h"
 #include "Sample_MPPI_CartPole_terminate.h"
+#include "Sample_MPPI_CartPole_emxAPI.h"
 #include "Sample_MPPI_CartPole_initialize.h"
 
 // Function Declarations
-static void argInit_1000x1_real_T(double result[1000]);
-static void argInit_100x1000_real_T(double result[100000]);
-static void argInit_1x100_real_T(double result[100]);
-static void argInit_4x100_real_T(double result[400]);
+static emxArray_real_T *argInit_Unboundedx1_real_T();
 static double argInit_real_T();
+static emxArray_real_T *c_argInit_UnboundedxUnbounded_r();
 static void main_Sample_MPPI_CartPole();
 
 // Function Definitions
 
 //
-// Arguments    : double result[1000]
-// Return Type  : void
+// Arguments    : void
+// Return Type  : emxArray_real_T *
 //
-static void argInit_1000x1_real_T(double result[1000])
+static emxArray_real_T *argInit_Unboundedx1_real_T()
 {
+  emxArray_real_T *result;
+  static int iv0[1] = { 2 };
+
   int idx0;
 
+  // Set the size of the array.
+  // Change this size to the value that the application requires.
+  result = emxCreateND_real_T(1, iv0);
+
   // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 1000; idx0++) {
+  for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
     // Set the value of the array element.
     // Change this value to the value that the application requires.
-    result[idx0] = argInit_real_T();
+    result->data[idx0] = argInit_real_T();
   }
-}
 
-//
-// Arguments    : double result[100000]
-// Return Type  : void
-//
-static void argInit_100x1000_real_T(double result[100000])
-{
-  int idx0;
-  int idx1;
-
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 100; idx0++) {
-    for (idx1 = 0; idx1 < 1000; idx1++) {
-      // Set the value of the array element.
-      // Change this value to the value that the application requires.
-      result[idx0 + 100 * idx1] = argInit_real_T();
-    }
-  }
-}
-
-//
-// Arguments    : double result[100]
-// Return Type  : void
-//
-static void argInit_1x100_real_T(double result[100])
-{
-  int idx1;
-
-  // Loop over the array to initialize each element.
-  for (idx1 = 0; idx1 < 100; idx1++) {
-    // Set the value of the array element.
-    // Change this value to the value that the application requires.
-    result[idx1] = argInit_real_T();
-  }
-}
-
-//
-// Arguments    : double result[400]
-// Return Type  : void
-//
-static void argInit_4x100_real_T(double result[400])
-{
-  int idx0;
-  int idx1;
-
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 4; idx0++) {
-    for (idx1 = 0; idx1 < 100; idx1++) {
-      // Set the value of the array element.
-      // Change this value to the value that the application requires.
-      result[idx0 + (idx1 << 2)] = argInit_real_T();
-    }
-  }
+  return result;
 }
 
 //
@@ -128,37 +82,68 @@ static double argInit_real_T()
 
 //
 // Arguments    : void
+// Return Type  : emxArray_real_T *
+//
+static emxArray_real_T *c_argInit_UnboundedxUnbounded_r()
+{
+  emxArray_real_T *result;
+  int idx0;
+  int idx1;
+
+  // Set the size of the array.
+  // Change this size to the value that the application requires.
+  result = emxCreate_real_T(2, 2);
+
+  // Loop over the array to initialize each element.
+  for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
+    for (idx1 = 0; idx1 < result->size[1U]; idx1++) {
+      // Set the value of the array element.
+      // Change this value to the value that the application requires.
+      result->data[idx0 + result->size[0] * idx1] = argInit_real_T();
+    }
+  }
+
+  return result;
+}
+
+//
+// Arguments    : void
 // Return Type  : void
 //
 static void main_Sample_MPPI_CartPole()
 {
   double K_tmp;
   double variance;
-  double Stk[1000];
-  double x[400];
-  static double delta_u[100000];
-  double dv0[100];
+  emxArray_real_T *Stk;
+  emxArray_real_T *x;
+  emxArray_real_T *delta_u;
+  emxArray_real_T *u;
 
   // Initialize function 'Sample_MPPI_CartPole' input arguments.
   K_tmp = argInit_real_T();
   variance = argInit_real_T();
 
   // Initialize function input argument 'Stk'.
-  argInit_1000x1_real_T(Stk);
+  Stk = argInit_Unboundedx1_real_T();
 
   // Initialize function input argument 'x'.
-  argInit_4x100_real_T(x);
+  x = c_argInit_UnboundedxUnbounded_r();
 
   // Initialize function input argument 'delta_u'.
-  argInit_100x1000_real_T(delta_u);
+  delta_u = c_argInit_UnboundedxUnbounded_r();
 
   // Initialize function input argument 'u'.
+  u = c_argInit_UnboundedxUnbounded_r();
+
   // Call the entry-point 'Sample_MPPI_CartPole'.
-  argInit_1x100_real_T(dv0);
-  Sample_MPPI_CartPole(K_tmp, K_tmp, variance, Stk, x, delta_u, dv0,
+  Sample_MPPI_CartPole(K_tmp, K_tmp, variance, Stk, x, delta_u, u,
                        argInit_real_T(), argInit_real_T(), argInit_real_T(),
                        argInit_real_T(), argInit_real_T(), argInit_real_T(),
                        argInit_real_T());
+  emxDestroyArray_real_T(u);
+  emxDestroyArray_real_T(delta_u);
+  emxDestroyArray_real_T(x);
+  emxDestroyArray_real_T(Stk);
 }
 
 //
