@@ -2,32 +2,23 @@ close all;
 clearvars;
 
 K = 1000;
-N = 100;
+N = 50;
 
+% Constraints
+u_min=0.1547;
+u_max=2.1547;
 %10s trajectory execution
-iterations = 500;
-% iterations=150;
-dt = 0.02;
-% System Paramters Given in the Project setting
-mc = 1;
-mp = 0.2;
-l = 0.5;
-g = 9.81;
-kd = 0.2;
-mu = 0;
+% iterations = 250;
+iterations=150;
+dt = 0.01;
+
 
 % Variance and Lamda
-lambda = 10;
+lambda = 1;
 variance = 10;
 R = 1/lambda;
+Q=eye(4);
 
-param.l=l;
-param.dt=dt;
-% Initial State
-x_init = [0 0 pi*(9/18) 0];
-
-% Final state for Cart Pole
-x_fin = [0 0 pi 0];
 
 % Variables To store the system state
 X_sys = zeros(4,iterations+1);
@@ -35,8 +26,11 @@ U_sys = zeros(1,iterations);
 cost  = zeros(1,iterations);
 cost_avg = zeros(1,iterations);
 
-X_sys(:,1) = x_init;
 
+% Initial State
+x_init = [0.15 1.2875 1.1547 0]';
+x_s=[0.5 1.6875 1.1547 0]';
+X_sys(:,1) = x_init;
 
 
 
@@ -44,18 +38,19 @@ X_sys(:,1) = x_init;
 delta_u = zeros(N,K);
 x = zeros(4,N);
 
-u_init = 1;
-X_sys(:,1) = x_init;
+u_init = 1*x_s(3);
+
 
 % Initialization of input for N time horizone
 u = zeros(1,N);
+
 tic;
 % MPPI Loop
-[X_sys,U_sys,cost_avg]=MPPI_CartPole(...
+[X_sys,U_sys,cost_avg]=MPPI_MGCM(...
                             iterations,N,K,lambda,variance,...
                             x_init,x,u_init,X_sys,U_sys,delta_u,u,...
-                            cost, cost_avg,R,...
-                            mc, mp, l, g, kd, dt...
+                            cost, cost_avg,x_s, Q,R, dt,...
+                            u_min,u_max...
                             );
 toc;
 
@@ -74,16 +69,11 @@ title('X force');
 
 % a=0.99;
 % yk=zeros(1,iterations);
-% 
+
 % for i=2:iterations
 %     yk(i) = a*U_sys(i)+(1-a)*yk(i-1);
 % end
-
-% order = 3;
-% framelen = 11;
-% 
-% yk = sgolayfilt(U_sys,order,framelen);
-% %                                                                                                                                        
+%                                                                                                                                         
 % X=zeros(4,1);
 % X(:,1)=x_init;
 % for j=1:iterations
