@@ -24,10 +24,10 @@ R = 1/lambda;
 param.l=l;
 param.dt=dt;
 % Initial State
-x_init = [0 0 pi*(9/18) 0];
+x_init = [0 0 0 0];
 
 % Final state for Cart Pole
-x_fin = [0 0 pi 0];
+x_fin = [0 0 -pi 0];
 
 % Variables To store the system state
 X_sys = zeros(4,iterations+1);
@@ -38,9 +38,6 @@ cost_avg = zeros(1,iterations);
 X_sys(:,1) = x_init;
 
 
-
-
-% put data onto GPU
 delta_u = zeros(N,K);
 x = zeros(4,N);
 
@@ -49,14 +46,58 @@ X_sys(:,1) = x_init;
 
 % Initialization of input for N time horizone
 u = zeros(1,N);
-tic;
+
 % MPPI Loop
-[X_sys,U_sys,cost_avg]=MPPI_CartPole(...
-                            iterations,N,K,lambda,variance,...
-                            x_init,x,u_init,X_sys,U_sys,delta_u,u,...
-                            cost, cost_avg,R,...
-                            mc, mp, l, g, kd, dt...
-                            );
+r=robotics.Rate(1/dt); % set loop rate
+
+tic;
+reset(r);
+for j = 1: iterations
+    time = r.TotalElapsedTime;
+    % Calculating cost for K samples and N finite horizone
+    Stk = zeros(K,1);
+    x(:,1) = x_init;
+
+    [Stk,delta_u,x]=Sample_MPPI_CartPole_mex(...
+                                K,N,variance,Stk,...
+                                x,delta_u,u,...
+                                R, mc, mp, l, g, kd, dt...
+                                );
+    % Average cost over iterations
+    cost_avg(j) = sum(Stk)/K;
+
+    % Updating the control input according to the expectation over K sample
+    % trajectories
+    for i1 = 1:N
+        u(i1) = u(i1) + totalEntropy(Stk, delta_u(i1,:), lambda);
+    end
+
+    % Input to the system 
+    U_sys(j) = u(1);
+
+    % State update because of input
+    X_sys(:,j+1) = X_sys(:,j) + CartPole_Dynamics(X_sys(1, j), X_sys(2,j),...
+        X_sys(3,j), X_sys(4,j), u(1),  mc, mp, l, g, kd)*dt;
+
+    % Calculating state cost function
+    cost(j+1) = cost_function_cartpole(X_sys(1,j+1), X_sys(2,j+1), X_sys(3,j+1),...
+        X_sys(4,j+1),(u(1)), dt, R);
+
+    % Input updating for the next time step
+    for i2 = 1:N-1
+        u(i2) = u(i2+1);
+    end
+    % Updating the input in Last time step
+    u(N) = u_init;
+
+    % initial state for calculating the expectation over trajectories in next
+    % step
+    x_init = X_sys(:,j+1); 
+
+    fprintf('Iteration: %d - Time Elapsed: %f\n',j,time)
+	waitfor(r);
+end % end for
+
 toc;
 
 %% plot the cart pole state X and theta
